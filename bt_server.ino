@@ -1,6 +1,6 @@
 static void setupBT(){
   while (!Serial);
-  pinMode(13,OUTPUT);
+  //pinMode(13,OUTPUT);
   LBTServer.begin((uint8_t*)serverName);
   Serial.printf("[%s] is waiting for any client...",serverName);
   
@@ -9,7 +9,7 @@ static void setupBT(){
       Serial.printf("lol");
       break;
     }else{
-      LBTServer.accept(5);
+      LBTServer.accept(serverWaitTime);
       Serial.println("Waiting for connection");
     }
   }

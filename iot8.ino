@@ -1,9 +1,8 @@
 #include <LBT.h>
 #include <LBTServer.h>
-#define serverName "BTserverTest"
+#define serverName "iot8_demo"
 #define serverWaitTime 5
-
-char BTread;
+String BTread;
 
 
 #include <LiquidCrystal.h>
@@ -23,30 +22,17 @@ void setup() {
 }
 
 void loop() {
-  if(LBTServer.available()){
-    BTread = LBTServer.read();
-    if(BTread == 'T')
-    {
-      digitalWrite(13,HIGH);
-    }
-    else if(BTread == 'F')
-    {
-      digitalWrite(13,LOW);
-    }
-    Serial.println(BTread);
-    delay(10);
+  if (LBTServer.available()){
+    // wait a bit for the entire message to arrive
+    delay(100);
+    BTread = LBTServer.readString();
+    setDisplay(BTread);
   }
   if (Serial.available()) {
     // wait a bit for the entire message to arrive
     delay(100);
-    // clear the screen
-    lcd.clear();
     // read all the available characters
-    while (Serial.available() > 0) {
-      // display each character to the LCD
-      //lcd.write(Serial.read());
-      String str = Serial.readString();
-      setDisplay(str);
-    }
+    String str = Serial.readString();
+    setDisplay(str);
   }
 }
