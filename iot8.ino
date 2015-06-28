@@ -4,26 +4,22 @@
 #define serverWaitTime 5
 
 char BTread;
+
+
+#include <LiquidCrystal.h>
+const int RS = 8;
+const int EN = 9;
+const int D4 = 4;
+const int D5 = 5;
+const int D6 = 6;
+const int D7 = 7;
+LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
+
+
 void setup() {
   Serial.begin(115200);
-  while (!Serial);
-  pinMode(13,OUTPUT);
-  LBTServer.begin((uint8_t*)serverName);
-  Serial.printf("[%s] is waiting for any client...",serverName);
-  
-  /*while(!LBTServer.accept(serverWaitTime)){
-    Serial.print(" ... ");
-  }*/
-  while(true){
-    if(LBTServer.connected()){
-      Serial.printf("lol");
-      break;
-    }else{
-      LBTServer.accept(5);
-      Serial.println("Waiting for connection");
-    }
-  }
-  Serial.println("\n===Connected!===");
+  setupLCD();
+  setupBT();
 }
 
 void loop() {
@@ -39,5 +35,18 @@ void loop() {
     }
     Serial.println(BTread);
     delay(10);
+  }
+  if (Serial.available()) {
+    // wait a bit for the entire message to arrive
+    delay(100);
+    // clear the screen
+    lcd.clear();
+    // read all the available characters
+    while (Serial.available() > 0) {
+      // display each character to the LCD
+      //lcd.write(Serial.read());
+      String str = Serial.readString();
+      setDisplay(str);
+    }
   }
 }
