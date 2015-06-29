@@ -15,7 +15,30 @@ const int D7 = 7;
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
 
+#include <LGPS.h>
+gpsSentenceInfoStruct info;
+char buff[256];
+double latitude;
+double longitude;
+double lat_d;
+double lon_d;
+char buffer_latitude[8];
+char buffer_longitude[8];
+
+
+#include <math.h>
+struct NavLeg{
+  double e_lati;
+  double e_long;
+  char* maneuver;
+};
+long len;
+int cur_leg_idx;
+NavLeg* nav_legs;
+
+
 void setup() {
+  LGPS.powerOn();
   Serial.begin(115200);
   setupLCD();
   setupBT();

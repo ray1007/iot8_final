@@ -13,5 +13,7 @@ static void setupBT(){
       Serial.println("Waiting for connection");
     }
   }
-  Serial.println("\n===Connected!===");
+  Serial.println("===Connected!===");
+  setDisplay("===Connected!===");
+  
 }
