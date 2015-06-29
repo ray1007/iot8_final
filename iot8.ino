@@ -33,8 +33,9 @@ struct NavLeg{
   char* maneuver;
 };
 long len;
-int cur_leg_idx;
+int cur_leg_id;
 NavLeg* nav_legs;
+const int Radius = 6371000;
 
 
 void setup() {
@@ -49,13 +50,25 @@ void loop() {
     // wait a bit for the entire message to arrive
     delay(100);
     BTread = LBTServer.readString();
-    setDisplay(BTread);
+    Serial.println(BTread);
+    setDisplay(" Received Info. ");
+    char *legs = new char[BTread.length() + 1];
+    strcpy(legs, BTread.c_str());
+    setupNav(legs);
+    
+    while (cur_leg_id != len-1){
+      navigate();
+    }
+  
+    endNav();
+    delete[] legs;  
   }
+  /*
   if (Serial.available()) {
     // wait a bit for the entire message to arrive
     delay(100);
     // read all the available characters
     String str = Serial.readString();
     setDisplay(str);
-  }
+  }*/
 }
