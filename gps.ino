@@ -77,7 +77,7 @@ bool parseGPGGA(const char* GPGGAstr)
     minute   = (GPGGAstr[tmp + 2] - '0') * 10 + (GPGGAstr[tmp + 3] - '0');
     second    = (GPGGAstr[tmp + 4] - '0') * 10 + (GPGGAstr[tmp + 5] - '0');
     
-    sprintf(buff, "UTC timer %2d-%2d-%2d", hour, minute, second);
+    //sprintf(buff, "UTC timer %2d-%2d-%2d", hour, minute, second);
     //Serial.println(buff);
     
     tmp = getComma(2, GPGGAstr);
@@ -91,14 +91,14 @@ bool parseGPGGA(const char* GPGGAstr)
     double longitude_decimal=(longitude-longitude_int)*100.0/60.0;
     longitude=longitude_int+longitude_decimal;
     
-    //short len = sprintf(buff, "latitude = %10.4f, longitude = %10.4f", latitude, longitude);
+    //sprintf(buff, "latitude = %10.4f, longitude = %10.4f", latitude, longitude);
     //Serial.println(buff); 
     
     tmp = getComma(7, GPGGAstr);
     num = getIntNumber(&GPGGAstr[tmp]);    
-    sprintf(buff, "satellites number = %d", num);
-    //Serial.println(buff);
-    if (num > 6){
+    //sprintf(buff, "satellites number = %d", num);
+    Serial.println(buff);
+    if (num >= 4){
       return true;
     }
   }
@@ -106,6 +106,7 @@ bool parseGPGGA(const char* GPGGAstr)
   {
     Serial.println("Not get data"); 
   }
+  return false;
 }
 
 bool GPS_receive() {

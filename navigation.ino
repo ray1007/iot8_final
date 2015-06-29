@@ -2,6 +2,7 @@ static void setupNav(char* str){
   char * pEnd; 
   pEnd = strtok (str," ,");
   len = strtol (pEnd, &pEnd, 10);
+  Serial.println(len);
   pEnd = strtok (NULL," ,");
   nav_legs = new NavLeg[len];
   double v;
@@ -20,20 +21,26 @@ static void setupNav(char* str){
     nav_legs[i].maneuver = pEnd;
     pEnd = strtok (NULL," ,");
   }
+  for (int i=0;i<len;++i){
+    sprintf(buff, "%5f-%5f-%s", nav_legs[i].e_lati, nav_legs[i].e_long, nav_legs[i].maneuver);
+    Serial.println(buff);
+  }
+  Serial.println("Fin setup.");
 }
 
 void navigate(){
-  if (len < 0){return; }
+  if (len <= 0){ Serial.println("len = 0"); return; }
   
-  if(!GPS_receive()){ return; }
+  if(!GPS_receive()){ Serial.println("GPS no receive"); return; }
   double dmin = Radius;
   
   int newLegIdx = cur_leg_id;
-  int begin = (cur_leg_id-3 > 0) ? cur_leg_id-3 : 0;
-  int end = (cur_leg_id+3 < len+1) ? cur_leg_id-3 : len;
+  int begin = (cur_leg_id-2 > 0) ? cur_leg_id-2 : 0;
+  int end = (cur_leg_id+2 < len+1) ? cur_leg_id+2 : len;
   
   for (int i=begin;i<end;++i){
     double d = distance(latitude, longitude, nav_legs[i].e_lati, nav_legs[i].e_long);
+    Serial.println(d);
     if(d < 30 && d < dmin){
       dmin = d;
       newLegIdx=i;

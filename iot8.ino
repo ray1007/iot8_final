@@ -33,7 +33,7 @@ struct NavLeg{
   char* maneuver;
 };
 long len;
-int cur_leg_id;
+int cur_leg_id=-1;
 NavLeg* nav_legs;
 const int Radius = 6371000;
 
@@ -58,6 +58,7 @@ void loop() {
     
     while (cur_leg_id != len-1){
       navigate();
+      delay(300);
     }
   
     endNav();
